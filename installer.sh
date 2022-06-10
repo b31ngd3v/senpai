@@ -1,4 +1,10 @@
 #!/bin/sh
+#   _    _____ _                 _ _____      
+#  | |__|___ // |_ __   __ _  __| |___ /_   __   My Arch Installation Script
+#  | '_ \ |_ \| | '_ \ / _` |/ _` | |_ \ \ / /   Pramurta Sinha (b31ngd3v)
+#  | |_) |__) | | | | | (_| | (_| |___) \ V /    https://www.github.com/b31ngd3v
+#  |_.__/____/|_|_| |_|\__, |\__,_|____/ \_/     contact@b31ngd3v.eu.org
+#                      |___/                  
 
 set -e
 
@@ -22,7 +28,7 @@ arch-chroot /mnt ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
 arch-chroot /mnt hwclock --systohc
 arch-chroot /mnt sed -i "s/#en_US.UTF-8/en_US.UTF-8/g" /etc/locale.gen
 arch-chroot /mnt locale-gen
-echo "LANG=en_US.UTF-8" > /mnt/etc/locale.conf
+echo "LANG=en_US.UTF-8" >> /mnt/etc/locale.conf
 export LANG="en_US.UTF-8"
 echo "arch" > /mnt/etc/hostname
 cat > /mnt/etc/hosts << HOSTS
@@ -41,9 +47,7 @@ echo lucifer
 echo lucifer
 ) | arch-chroot /mnt passwd b31ngd3v
 
-arch-chroot /mnt pacman -Sy networkmanager grub os-prober efibootmgr dosfstools mtools
-arch-chroot /mnt systemctl enable --now NetworkManager.service
-nmcli d wifi connect M20 password zbaa8991
+arch-chroot /mnt pacman --noconfirm -Sy grub os-prober efibootmgr dosfstools mtools
 arch-chroot /mnt grub-install --target=x86_64-efi --bootloader-id=grub_uefi --recheck
 arch-chroot /mnt sed -i 's/GRUB_TIMEOUT=5/GRUB_TIMEOUT=0/g' /etc/default/grub
 arch-chroot /mnt sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet"/GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3"/g' /etc/default/grub
