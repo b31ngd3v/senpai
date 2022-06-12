@@ -8,6 +8,22 @@
 
 set -e
 
+read -p "Set Hostname: " HOSTNAME
+read -p "Set Username: " USERNAME
+
+stty -echo
+printf "Set Password: "
+read PASSWORD
+printf "\n"
+printf "Confirm Password: "
+read CONFIRMPASSWORD
+printf "\n"
+stty echo
+
+if [[ "$PASSWORD" != "$CONFIRMPASSWORD" ]] then
+    printf "Passwords didn't match! Exiting script..." >&2
+fi
+
 timedatectl set-ntp true
 
 LARGEST_PARTITION_SIZE=$(fdisk -l | grep "Disk.*GiB" | cut -d' ' -f3 | sort -nr | head -n1)
@@ -31,22 +47,22 @@ arch-chroot /mnt sed -i "s/#en_US.UTF-8/en_US.UTF-8/g" /etc/locale.gen
 arch-chroot /mnt locale-gen
 echo "LANG=en_US.UTF-8" >> /mnt/etc/locale.conf
 export LANG="en_US.UTF-8"
-echo "arch" > /mnt/etc/hostname
+echo "$HOSTNAME" > /mnt/etc/hostname
 cat > /mnt/etc/hosts << HOSTS
 127.0.0.1      localhost
 ::1            localhost
-127.0.1.1      arch.localdomain     arch
+127.0.1.1      $HOSTNAME.localdomain	$HOSTNAME
 HOSTS
 (
-echo lucifer
-echo lucifer
+echo $PASSWORD
+echo $PASSWORD
 ) | arch-chroot /mnt passwd
 arch-chroot /mnt sed -i 's/# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL/g' /etc/sudoers
-arch-chroot /mnt useradd -m -G wheel b31ngd3v
+arch-chroot /mnt useradd -m -G wheel $USERNAME
 (
-echo lucifer
-echo lucifer
-) | arch-chroot /mnt passwd b31ngd3v
+echo $PASSWORD
+echo $PASSWORD
+) | arch-chroot /mnt passwd $USERNAME
 
 arch-chroot /mnt pacman --noconfirm -Sy grub os-prober efibootmgr dosfstools mtools
 arch-chroot /mnt grub-install --target=x86_64-efi --bootloader-id=grub_uefi --recheck
