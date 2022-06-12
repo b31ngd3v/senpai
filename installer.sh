@@ -24,6 +24,7 @@ stty echo
 
 if [ "$PASSWORD" != "$CONFIRMPASSWORD" ]; then
     printf "Passwords didn't match! Exiting script..." >&2
+    exit 1
 fi
 
 timedatectl set-ntp true
