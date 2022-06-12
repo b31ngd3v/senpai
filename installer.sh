@@ -8,19 +8,21 @@
 
 set -e
 
-read -p "Set Hostname: " HOSTNAME
-read -p "Set Username: " USERNAME
+printf "Set Hostname: "
+read -r HOSTNAME
+printf "Set Username: "
+read -r USERNAME
 
 stty -echo
 printf "Set Password: "
-read PASSWORD
+read -r PASSWORD
 printf "\n"
 printf "Confirm Password: "
-read CONFIRMPASSWORD
+read -r CONFIRMPASSWORD
 printf "\n"
 stty echo
 
-if [[ "$PASSWORD" != "$CONFIRMPASSWORD" ]] then
+if [ "$PASSWORD" != "$CONFIRMPASSWORD" ]; then
     printf "Passwords didn't match! Exiting script..." >&2
 fi
 
@@ -54,15 +56,15 @@ cat > /mnt/etc/hosts << HOSTS
 127.0.1.1      $HOSTNAME.localdomain	$HOSTNAME
 HOSTS
 (
-echo $PASSWORD
-echo $PASSWORD
+echo "$PASSWORD"
+echo "$PASSWORD"
 ) | arch-chroot /mnt passwd
 arch-chroot /mnt sed -i 's/# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL/g' /etc/sudoers
-arch-chroot /mnt useradd -m -G wheel $USERNAME
+arch-chroot /mnt useradd -m -G wheel "$USERNAME"
 (
-echo $PASSWORD
-echo $PASSWORD
-) | arch-chroot /mnt passwd $USERNAME
+echo "$PASSWORD"
+echo "$PASSWORD"
+) | arch-chroot /mnt passwd "$USERNAME"
 
 arch-chroot /mnt pacman --noconfirm -Sy grub os-prober efibootmgr dosfstools mtools
 arch-chroot /mnt grub-install --target=x86_64-efi --bootloader-id=grub_uefi --recheck
