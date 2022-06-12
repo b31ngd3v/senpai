@@ -23,7 +23,8 @@ printf "\n"
 stty echo
 
 if [ "$PASSWORD" != "$CONFIRMPASSWORD" ]; then
-    printf "Passwords didn't match! Exiting script..." >&2
+    printf "Passwords didn't match! Exiting the script..." >&2
+    printf "\n"
     exit 1
 fi
 
