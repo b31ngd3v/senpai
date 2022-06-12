@@ -21,6 +21,7 @@ mount "${LARGEST_PARTITION}2" /mnt
 mkdir /mnt/boot && mkdir /mnt/boot/EFI
 mount "${LARGEST_PARTITION}1" /mnt/boot/EFI
 
+sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 15/" /etc/pacman.conf
 pacstrap /mnt base base-devel linux linux-headers linux-firmware
 genfstab -U /mnt >> /mnt/etc/fstab
 
@@ -40,7 +41,7 @@ HOSTS
 echo lucifer
 echo lucifer
 ) | arch-chroot /mnt passwd
-arch-chroot /mnt sed -i 's/# %wheel ALL=(ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL/g' /etc/sudoers
+arch-chroot /mnt sed -i 's/# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL/g' /etc/sudoers
 arch-chroot /mnt useradd -m -G wheel b31ngd3v
 (
 echo lucifer

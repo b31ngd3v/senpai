@@ -17,6 +17,6 @@ swapon /mnt/swapfile
 sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 15/" /etc/pacman.conf
 sed -i "s/^#Color$/Color\nILoveCandy/" /etc/pacman.conf
 
-pacman -S networkmanager vim amd-ucode xorg-server xf86-video-amdgpu xorg-xinit
+pacman -Sy --noconfirm  networkmanager vim amd-ucode xorg-server xf86-video-amdgpu xorg-xinit btop
 systemctl enable --now NetworkManager.service
 nmcli d wifi connect M20 password zbaa8991
