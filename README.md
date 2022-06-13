@@ -2,7 +2,7 @@
 
 ```
 pacman -Sy git
-git clone https://github.com/b31ngd3v/arch-install.git
+git clone https://github.com/b31ngd3v/senpai.git
 cd arch-install
 ./installer.sh
 ```
