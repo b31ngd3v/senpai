@@ -84,7 +84,7 @@ arch-chroot /mnt sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet"/GRUB_CM
 arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
 
 arch-chroot /mnt pacman -S --noconfirm networkmanager
-arch-chroot /mnt systemctl enable --now NetworkManager.service
+arch-chroot /mnt systemctl enable NetworkManager.service
 
 if [ "$SSID" != "" ]; then
     arch-chroot /mnt nmcli d wifi connect "$SSID" password "$PASS"
