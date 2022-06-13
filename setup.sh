@@ -8,6 +8,38 @@
 
 set -e
 
+SSID="$1"
+PASS="$2"
+
+ISAMDCPU=$( grep -c "AuthenticAMD" /proc/cpuinfo )
+ISINTELCPU=$( grep -c "GenuineIntel" /proc/cpuinfo )
+
+ISAMDGPU=$( lspci | grep -icE "(VGA|3D).*AMD" )
+ISINTELGPU=$( lspci | grep -icE "(VGA|3D).*Intel" )
+ISNVIDIAGPU=$( lspci | grep -icE "(VGA|3D).*NVIDIA" )
+
+if [ "$ISAMDCPU" != "0" ]; then
+    CPU="amd"
+elif [ "$ISINTELCPU" != "0" ]; then
+    CPU="intel"
+else
+    printf "Failed to identify the cpu brand! Exiting the script..." >&2
+    printf "\n"
+    exit 1
+fi
+
+if [ "$ISAMDGPU" != "0" ]; then
+    GPUDRIVER="xf86-video-amdgpu"
+elif [ "$ISINTELGPU" != "0" ]; then
+    GPUDRIVER="xf86-video-intel"
+elif [ "$ISNVIDIAGPU" != "0" ]; then
+    GPUDRIVER="nvidia"
+else
+    printf "Failed to identify the gpu brand! Exiting the script..." >&2
+    printf "\n"
+    exit 1
+fi
+
 dd if=/dev/zero of=/mnt/swapfile bs=1M count=8192 status=progress
 chmod 600 /mnt/swapfile 
 mkswap /mnt/swapfile
@@ -17,6 +49,14 @@ swapon /mnt/swapfile
 sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 15/" /etc/pacman.conf
 sed -i "s/^#Color$/Color\nILoveCandy/" /etc/pacman.conf
 
-pacman -Sy --noconfirm  networkmanager vim amd-ucode xorg-server xf86-video-amdgpu xorg-xinit btop
-systemctl enable --now NetworkManager.service
-nmcli d wifi connect M20 password zbaa8991
+if [ "$SSID" != "" ]; then
+    sudo pacman -Sy --noconfirm networkmanager
+    systemctl enable --now NetworkManager.service
+    nmcli d wifi connect "$SSID" password "$PASS"
+fi
+
+sudo pacman -Sy --noconfirm vim "$CPU-ucode" xorg-server "$GPUDRIVER" xorg-xinit btop
+
+if [ "$GPUDRIVER" = "nvidia" ]; then
+    sudo pacman -S --noconfirm nvidia-utils
+fi
