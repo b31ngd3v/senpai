@@ -1,3 +1,5 @@
+# Senpai - i use arch btw
+
 ## Download and run the installation script
 
 ```
