@@ -22,6 +22,12 @@ read -r CONFIRMPASSWORD
 printf "\n"
 stty echo
 
+if [ "$PASSWORD" != "$CONFIRMPASSWORD" ]; then
+    printf "Passwords didn't match! Exiting the script..." >&2
+    printf "\n"
+    exit 1
+fi
+
 printf "WIFI SSID (leave it blank if you don't wanna use wifi): "
 read -r SSID
 
@@ -30,12 +36,6 @@ printf "WIFI Password (leave it blank if you don't wanna use wifi): "
 read -r PASS
 printf "\n"
 stty echo
-
-if [ "$PASSWORD" != "$CONFIRMPASSWORD" ]; then
-    printf "Passwords didn't match! Exiting the script..." >&2
-    printf "\n"
-    exit 1
-fi
 
 timedatectl set-ntp true
 
