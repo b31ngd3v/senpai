@@ -8,9 +8,6 @@
 
 set -e
 
-SSID="$1"
-PASS="$2"
-
 ISAMDCPU=$( grep -c "AuthenticAMD" /proc/cpuinfo )
 ISINTELCPU=$( grep -c "GenuineIntel" /proc/cpuinfo )
 
@@ -48,12 +45,6 @@ swapon /mnt/swapfile
 
 sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 15/" /etc/pacman.conf
 sed -i "s/^#Color$/Color\nILoveCandy/" /etc/pacman.conf
-
-if [ "$SSID" != "" ]; then
-    sudo pacman -Sy --noconfirm networkmanager
-    systemctl enable --now NetworkManager.service
-    nmcli d wifi connect "$SSID" password "$PASS"
-fi
 
 sudo pacman -Sy --noconfirm vim "$CPU-ucode" xorg-server "$GPUDRIVER" xorg-xinit btop
 

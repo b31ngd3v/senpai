@@ -22,6 +22,15 @@ read -r CONFIRMPASSWORD
 printf "\n"
 stty echo
 
+printf "WIFI SSID (leave it blank if you don't wanna use wifi): "
+read -r SSID
+
+stty -echo
+printf "WIFI Password (leave it blank if you don't wanna use wifi): "
+read -r PASS
+printf "\n"
+stty echo
+
 if [ "$PASSWORD" != "$CONFIRMPASSWORD" ]; then
     printf "Passwords didn't match! Exiting the script..." >&2
     printf "\n"
@@ -73,3 +82,10 @@ arch-chroot /mnt grub-install --target=x86_64-efi --bootloader-id=grub_uefi --re
 arch-chroot /mnt sed -i 's/GRUB_TIMEOUT=5/GRUB_TIMEOUT=0/g' /etc/default/grub
 arch-chroot /mnt sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet"/GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3"/g' /etc/default/grub
 arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
+
+arch-chroot /mnt pacman -S --noconfirm networkmanager
+arch-chroot /mnt systemctl enable --now NetworkManager.service
+
+if [ "$SSID" != "" ]; then
+    arch-chroot /mnt nmcli d wifi connect "$SSID" password "$PASS"
+fi
