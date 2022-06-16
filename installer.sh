@@ -28,15 +28,6 @@ if [ "$PASSWORD" != "$CONFIRMPASSWORD" ]; then
     exit 1
 fi
 
-printf "WIFI SSID (leave it blank if you don't wanna use wifi): "
-read -r SSID
-
-stty -echo
-printf "WIFI Password (leave it blank if you don't wanna use wifi): "
-read -r PASS
-printf "\n"
-stty echo
-
 timedatectl set-ntp true
 
 LARGEST_PARTITION_SIZE=$(fdisk -l | grep "Disk.*GiB" | cut -d' ' -f3 | sort -nr | head -n1)
@@ -85,7 +76,3 @@ arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
 
 arch-chroot /mnt pacman -S --noconfirm networkmanager
 arch-chroot /mnt systemctl enable NetworkManager.service
-
-if [ "$SSID" != "" ]; then
-    arch-chroot /mnt nmcli d wifi connect "$SSID" password "$PASS"
-fi

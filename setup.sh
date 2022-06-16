@@ -6,6 +6,15 @@
 #  |_.__/____/|_|_| |_|\__, |\__,_|____/ \_/     contact@b31ngd3v.eu.org
 #                      |___/                  
 
+printf "WIFI SSID (leave it blank if you don't wanna use wifi): "
+read -r SSID
+
+stty -echo
+printf "WIFI Password (leave it blank if you don't wanna use wifi): "
+read -r PASS
+printf "\n"
+stty echo
+
 ISAMDCPU=$( grep -c "AuthenticAMD" /proc/cpuinfo )
 ISINTELCPU=$( grep -c "GenuineIntel" /proc/cpuinfo )
 
@@ -40,6 +49,10 @@ chmod 600 /mnt/swapfile
 mkswap /mnt/swapfile
 echo '/mnt/swapfile none swap sw 0 0' | tee -a /etc/fstab
 swapon /mnt/swapfile
+
+if [ "$SSID" != "" ]; then
+    nmcli d wifi connect "$SSID" password "$PASS"
+fi
 
 sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 15/" /etc/pacman.conf
 sed -i "s/^#Color$/Color\nILoveCandy/" /etc/pacman.conf
