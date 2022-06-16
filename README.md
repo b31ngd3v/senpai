@@ -14,14 +14,3 @@ cd arch-install
 ```
 iwctl --passphrase=PASSPHRASE station DEVICE connect SSID
 ```
-
-## Common errors and their solutions
-
-### error: key could not be imported
-
-```
-pacman -Scc
-gpg --refresh-keys
-pacman-key --init
-pacman-key --populate
-```
