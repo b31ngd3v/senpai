@@ -6,8 +6,6 @@
 #  |_.__/____/|_|_| |_|\__, |\__,_|____/ \_/     contact@b31ngd3v.eu.org
 #                      |___/                  
 
-set -e
-
 ISAMDCPU=$( grep -c "AuthenticAMD" /proc/cpuinfo )
 ISINTELCPU=$( grep -c "GenuineIntel" /proc/cpuinfo )
 
