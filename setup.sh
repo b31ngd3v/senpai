@@ -65,7 +65,10 @@ if [ "$GPUDRIVER" = "nvidia" ]; then
     sudo pacman -S --noconfirm nvidia-utils
 fi
 
-git clone https://github.com/b31ngd3v/dotfiles.git $HOME/.
+git clone --no-checkout https://github.com/b31ngd3v/dotfiles.git $HOME/tmp
+mv $HOME/tmp/.git $HOME
+rmdir $HOME/tmp
+(cd $HOME && git reset --hard HEAD)
 rm -rf $HOME/.git
 
 git clone https://aur.archlinux.org/yay-bin.git /tmp/yay-bin
