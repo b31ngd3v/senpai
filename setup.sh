@@ -91,5 +91,5 @@ git clone https://github.com/b31ngd3v/dwmblocks.git "$HOME/.local/src/dwmblocks"
 git clone https://github.com/b31ngd3v/st.git "$HOME/.local/src/st"
 (cd "$HOME/.local/src/st" && sudo make clean install)
 
-startx
 rm setup.sh
+startx
