@@ -76,3 +76,12 @@ arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
 
 arch-chroot /mnt pacman -S --noconfirm networkmanager
 arch-chroot /mnt systemctl enable NetworkManager.service
+
+cp setup.sh "/mnt/home/$USERNAME"
+arch-chroot /mnt chown "$USERNAME" "/home/$USERNAME/setup.sh"
+arch-chroot /mnt chmod +x "/home/$USERNAME/setup.sh"
+echo "./setup.sh" >> "/mnt/home/$USERNAME/.bashrc"
+arch-chroot /mnt chown "$USERNAME" "/home/$USERNAME/.bashrc"
+
+umount -l /mnt
+reboot

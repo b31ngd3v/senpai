@@ -59,28 +59,30 @@ fi
 sudo sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 15/" /etc/pacman.conf
 sudo sed -i "s/^#Color$/Color\nILoveCandy/" /etc/pacman.conf
 
-sudo pacman -Sy --noconfirm vim "$CPU-ucode" xorg-server "$GPUDRIVER" xorg-xinit btop git firefox xcompmgr xwallpaper xdotool dmenu ttf-jetbrains-mono ttf-joypixels ttf-font-awesome wget imagemagick python-pip sxiv
+sudo pacman -Sy --noconfirm vim "$CPU-ucode" xorg-server "$GPUDRIVER" xorg-xinit xorg-xbacklight btop git firefox xcompmgr xwallpaper xclip xdotool dmenu ttf-jetbrains-mono ttf-joypixels ttf-font-awesome wget imagemagick python-pip sxiv unclutter man-db mpv dunst sxhkd pulseaudio pamixer maim zsh neovim tmux ranger
 
 if [ "$GPUDRIVER" = "nvidia" ]; then
     sudo pacman -S --noconfirm nvidia-utils
 fi
 
-git clone --no-checkout https://github.com/b31ngd3v/dotfiles.git $HOME/tmp
-mv $HOME/tmp/.git $HOME
-rmdir $HOME/tmp
-(cd $HOME && git reset --hard HEAD)
-rm -rf $HOME/.git
+git clone --no-checkout https://github.com/b31ngd3v/dotfiles.git "$HOME/tmp"
+mv "$HOME/tmp/.git" "$HOME"
+rmdir "$HOME/tmp"
+(cd "$HOME" && git reset --hard HEAD)
+rm -rf "$HOME/.git"
+ln -sf "$HOME/.cache/wal/dunstrc" "$HOME/.config/dunst/dunstrc"
+mkdir "$HOME/pix/ss"
 
 git clone https://aur.archlinux.org/yay-bin.git /tmp/yay-bin
 (cd /tmp/yay-bin && makepkg -si --noconfirm)
 rm -rf /tmp/yay-bin
 
 sudo pacman -Rdd --noconfirm libxft
-yay -S --noconfirm libxft-bgra
+yay -S --noconfirm libxft-bgra betterlockscreen zsh-fast-syntax-highlighting
 
-pip install pywal
+pip install pywal ueberzug
 
-mkdir $HOME/.local/src
+mkdir "$HOME/.local/src"
 
 git clone https://github.com/b31ngd3v/dwm.git "$HOME/.local/src/dwm"
 (cd "$HOME/.local/src/dwm" && sudo make clean install)
@@ -91,5 +93,7 @@ git clone https://github.com/b31ngd3v/dwmblocks.git "$HOME/.local/src/dwmblocks"
 git clone https://github.com/b31ngd3v/st.git "$HOME/.local/src/st"
 (cd "$HOME/.local/src/st" && sudo make clean install)
 
+chsh -s "/bin/zsh"
+rm "$HOME/.bash*"
 rm setup.sh
-startx
+sudo reboot
