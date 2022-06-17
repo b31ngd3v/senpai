@@ -6,6 +6,8 @@
 #  |_.__/____/|_|_| |_|\__, |\__,_|____/ \_/     contact@b31ngd3v.eu.org
 #                      |___/                  
 
+set -e
+
 printf "WIFI SSID (leave it blank if you don't wanna use wifi): "
 read -r SSID
 
@@ -44,21 +46,47 @@ else
     exit 1
 fi
 
-dd if=/dev/zero of=/mnt/swapfile bs=1M count=8192 status=progress
-chmod 600 /mnt/swapfile 
-mkswap /mnt/swapfile
-echo '/mnt/swapfile none swap sw 0 0' | tee -a /etc/fstab
-swapon /mnt/swapfile
+sudo dd if=/dev/zero of=/mnt/swapfile bs=1M count=8192 status=progress
+sudo chmod 600 /mnt/swapfile 
+sudo mkswap /mnt/swapfile
+echo '/mnt/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+sudo swapon /mnt/swapfile
 
 if [ "$SSID" != "" ]; then
-    nmcli d wifi connect "$SSID" password "$PASS"
+    sudo nmcli d wifi connect "$SSID" password "$PASS"
 fi
 
-sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 15/" /etc/pacman.conf
-sed -i "s/^#Color$/Color\nILoveCandy/" /etc/pacman.conf
+sudo sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 15/" /etc/pacman.conf
+sudo sed -i "s/^#Color$/Color\nILoveCandy/" /etc/pacman.conf
 
-sudo pacman -Sy --noconfirm vim "$CPU-ucode" xorg-server "$GPUDRIVER" xorg-xinit btop
+sudo pacman -Sy --noconfirm vim "$CPU-ucode" xorg-server "$GPUDRIVER" xorg-xinit btop git firefox xcompmgr xwallpaper xdotool dmenu ttf-jetbrains-mono ttf-joypixels ttf-font-awesome wget imagemagick python-pip
 
 if [ "$GPUDRIVER" = "nvidia" ]; then
     sudo pacman -S --noconfirm nvidia-utils
 fi
+
+git clone https://github.com/b31ngd3v/dotfiles.git $HOME/.
+rm -rf $HOME/.git
+
+git clone https://aur.archlinux.org/yay-bin.git /tmp/yay-bin
+(cd /tmp/yay-bin && makepkg -si --noconfirm)
+rm -rf /tmp/yay-bin
+
+sudo pacman -Rdd --noconfirm libxft
+yay -S --noconfirm libxft-bgra
+
+pip install pywal
+
+mkdir $HOME/.local/src
+
+git clone https://github.com/b31ngd3v/dwm.git "$HOME/.local/src/dwm"
+(cd "$HOME/.local/src/dwm" && sudo make clean install)
+
+git clone https://github.com/b31ngd3v/dwmblocks.git "$HOME/.local/src/dwmblocks"
+(cd "$HOME/.local/src/dwmblocks" && sudo make clean install)
+
+git clone https://github.com/b31ngd3v/st.git "$HOME/.local/src/st"
+(cd "$HOME/.local/src/st" && sudo make clean install)
+
+startx
+rm setup.sh
