@@ -59,7 +59,7 @@ fi
 sudo sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 15/" /etc/pacman.conf
 sudo sed -i "s/^#Color$/Color\nILoveCandy/" /etc/pacman.conf
 
-sudo pacman -Sy --noconfirm vim "$CPU-ucode" xorg-server "$GPUDRIVER" xorg-xinit xorg-xbacklight btop git firefox xcompmgr xwallpaper xclip xdotool dmenu ttf-jetbrains-mono ttf-joypixels ttf-font-awesome wget imagemagick python-pip sxiv unclutter man-db mpv dunst sxhkd pulseaudio pamixer maim zsh neovim tmux ranger
+sudo pacman -Sy --noconfirm vim "$CPU-ucode" xorg-server "$GPUDRIVER" xorg-xinit brightnessctl btop git firefox xcompmgr xwallpaper xclip xdotool dmenu ttf-jetbrains-mono ttf-joypixels ttf-font-awesome wget imagemagick python-pip sxiv unclutter man-db mpv dunst sxhkd pulseaudio pamixer maim zsh neovim tmux ranger
 
 if [ "$GPUDRIVER" = "nvidia" ]; then
     sudo pacman -S --noconfirm nvidia-utils
