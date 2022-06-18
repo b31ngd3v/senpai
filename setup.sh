@@ -79,6 +79,7 @@ rm -rf /tmp/yay-bin
 
 sudo pacman -Rdd --noconfirm libxft
 yay -S --noconfirm libxft-bgra betterlockscreen zsh-fast-syntax-highlighting
+sudo systemctl enable betterlockscreen@$USER
 
 pip install pywal ueberzug
 
