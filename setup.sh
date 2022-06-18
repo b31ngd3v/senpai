@@ -78,7 +78,7 @@ git clone https://aur.archlinux.org/yay-bin.git /tmp/yay-bin
 rm -rf /tmp/yay-bin
 
 sudo pacman -Rdd --noconfirm libxft
-yay -S --noconfirm libxft-bgra betterlockscreen zsh-fast-syntax-highlighting
+yay -S --noconfirm libxft-bgra betterlockscreen zsh-fast-syntax-highlighting nerd-fonts-sf-mono
 sudo systemctl enable betterlockscreen@$USER
 
 pip install pywal ueberzug
@@ -94,6 +94,7 @@ git clone https://github.com/b31ngd3v/dwmblocks.git "$HOME/.local/src/dwmblocks"
 git clone https://github.com/b31ngd3v/st.git "$HOME/.local/src/st"
 (cd "$HOME/.local/src/st" && sudo make clean install)
 
+yay -Sc --noconfirm
 sudo chsh -s "$(which zsh)" "$USER"
 rm ~/.bash*
 rm setup.sh
