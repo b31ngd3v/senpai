@@ -17,12 +17,12 @@ read -r PASS
 printf "\n"
 stty echo
 
-ISAMDCPU=$( grep -c "AuthenticAMD" /proc/cpuinfo )
-ISINTELCPU=$( grep -c "GenuineIntel" /proc/cpuinfo )
+ISAMDCPU=$( grep -c "AuthenticAMD" /proc/cpuinfo || true )
+ISINTELCPU=$( grep -c "GenuineIntel" /proc/cpuinfo || true )
 
-ISAMDGPU=$( lspci | grep -icE "(VGA|3D).*AMD" )
-ISINTELGPU=$( lspci | grep -icE "(VGA|3D).*Intel" )
-ISNVIDIAGPU=$( lspci | grep -icE "(VGA|3D).*NVIDIA" )
+ISAMDGPU=$( lspci | grep -icE "(VGA|3D).*AMD" || true )
+ISINTELGPU=$( lspci | grep -icE "(VGA|3D).*Intel" || true )
+ISNVIDIAGPU=$( lspci | grep -icE "(VGA|3D).*NVIDIA" || true )
 
 if [ "$ISAMDCPU" != "0" ]; then
     CPU="amd"
