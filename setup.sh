@@ -94,6 +94,8 @@ git clone https://github.com/b31ngd3v/dwmblocks.git "$HOME/.local/src/dwmblocks"
 git clone https://github.com/b31ngd3v/st.git "$HOME/.local/src/st"
 (cd "$HOME/.local/src/st" && sudo make clean install)
 
+echo "blacklist pcspkr" | sudo tee /etc/modprobe.d/nobeep.conf
+
 yay -Sc --noconfirm
 sudo chsh -s "$(which zsh)" "$USER"
 rm ~/.bash*
