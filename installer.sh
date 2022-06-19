@@ -32,11 +32,13 @@ timedatectl set-ntp true
 
 LARGEST_PARTITION_SIZE=$(fdisk -l | grep "Disk.*GiB" | cut -d' ' -f3 | sort -nr | head -n1)
 LARGEST_PARTITION=$(fdisk -l | grep "$LARGEST_PARTITION_SIZE GiB" | cut -d' ' -f2  | sed 's/.$//')
-sgdisk -Z "$LARGEST_PARTITION"
-sgdisk -n 1::+512MiB -t 1:ef00 -c 1:EFI "$LARGEST_PARTITION"
-sgdisk -n 2 -c 2:ROOT "$LARGEST_PARTITION"
-mkfs.fat -F32 "${LARGEST_PARTITION}1"
-mkfs.ext4 "${LARGEST_PARTITION}2"
+sfdisk "$LARGEST_PARTITION" << EOF
+label: gpt
+name=EFI,size=512MB,type=uefi
+name=ROOT,type=linux
+EOF
+echo "y" | mkfs.fat -F32 "${LARGEST_PARTITION}1"
+echo "y" | mkfs.ext4 "${LARGEST_PARTITION}2"
 mount "${LARGEST_PARTITION}2" /mnt
 mkdir /mnt/boot && mkdir /mnt/boot/EFI
 mount "${LARGEST_PARTITION}1" /mnt/boot/EFI
