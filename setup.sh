@@ -96,7 +96,7 @@ git clone https://github.com/b31ngd3v/st.git "$HOME/.local/src/st"
 
 echo "blacklist pcspkr" | sudo tee /etc/modprobe.d/nobeep.conf
 
-cat > /etc/X11/xorg.conf.d/30-touchpad.conf << CONF
+sudo tee /etc/X11/xorg.conf.d/30-touchpad.conf > /dev/null << CONF
 Section "InputClass"
     Identifier "touchpad"
     Driver "libinput"
@@ -106,7 +106,6 @@ EndSection
 CONF
 
 yay -Sc --noconfirm
-sudo pacman -Rs --noconfirm "$(pacman -Qtdq)"
 sudo chsh -s "$(which zsh)" "$USER"
 rm ~/.bash*
 rm setup.sh
