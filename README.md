@@ -18,3 +18,9 @@ cd senpai
 Download wallpapers from wallheaven with [waldl](https://github.com/pystardust/waldl) by [pystardust](https://github.com/pystardust). You can launch waldl from dmenu.
 
 I modified the original script to match the font and the color scheme provided by pywal.
+
+### Change Screen Resolution
+
+You can set your screen resolution with xrandr. Type `xrandr -s <width>x<height>`.
+
+And to make the change permanent add this line `xrandr -s <width>x<height> &` to your `.xinitrc` file.
