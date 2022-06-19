@@ -19,6 +19,10 @@ iwctl --passphrase=PASSPHRASE station DEVICE connect SSID
 
 ## Tips and Tricks
 
+### Virtualbox
+
+https://github.com/b31ngd3v/senpai/tree/virtualbox
+
 ### Download wallpapers
 
 Download wallpapers from wallheaven with [waldl](https://github.com/pystardust/waldl) by [pystardust](https://github.com/pystardust). You can launch waldl from dmenu.
