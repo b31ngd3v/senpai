@@ -35,7 +35,7 @@ timedatectl set-ntp true
 
 LARGEST_PARTITION_SIZE=$(fdisk -l | grep "Disk.*GiB" | cut -d' ' -f3 | sort -nr | head -n1)
 LARGEST_PARTITION=$(fdisk -l | grep "$LARGEST_PARTITION_SIZE GiB" | cut -d' ' -f2  | sed 's/.$//')
-if [ "$AUTOPART" = "y" || "$AUTOPART" = "Y" || "$AUTOPART" = "Yes" || "$AUTOPART" = "yes" ]; then
+if [ "$AUTOPART" = "y" ] || [ "$AUTOPART" = "Y" ] || [ "$AUTOPART" = "Yes" ] || [ "$AUTOPART" = "yes" ]; then
     sfdisk "$LARGEST_PARTITION" << EOF
 label: gpt
 name=EFI,size=512MB,type=uefi
@@ -44,9 +44,9 @@ EOF
 else
     printf "Create two partitions:"
     printf "\n"
-    printf "${LARGEST_PARTITION}1    EFI"
+    printf "    1. %s1    EFI" "$LARGEST_PARTITION"
     printf "\n"
-    printf "${LARGEST_PARTITION}2    Linux filesystem"
+    printf "    2. %s2    Linux filesystem" "$LARGEST_PARTITION"
     printf "\n"
     fdisk "$LARGEST_PARTITION"
 fi
