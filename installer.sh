@@ -28,7 +28,7 @@ if [ "$PASSWORD" != "$CONFIRMPASSWORD" ]; then
     exit 1
 fi
 
-printf "Would you like to use automatic partitioning? [y/N]"
+printf "Would you like to use automatic partitioning? [y/N]: "
 read -r AUTOPART
 
 timedatectl set-ntp true
