@@ -105,6 +105,24 @@ Section "InputClass"
 EndSection
 CONF
 
+if [ "$ISAMDGPU" != "0" ]; then
+    sudo tee /etc/X11/xorg.conf.d/20-amd-gpu.conf > /dev/null << CONF
+Section "Device"
+    Identifier  "AMD Graphics"
+    Driver      "amdgpu"
+    Option      "TearFree"  "true"
+EndSection
+CONF
+elif [ "$ISINTELGPU" != "0" ]; then
+    sudo tee /etc/X11/xorg.conf.d/20-intel-gpu.conf > /dev/null << CONF
+Section "Device"
+    Identifier  "Intel Graphics"
+    Driver      "intel"
+    Option      "TearFree"  "true"
+EndSection
+CONF
+fi
+
 yay -Sc --noconfirm
 sudo chsh -s "$(which zsh)" "$USER"
 rm ~/.bash*
