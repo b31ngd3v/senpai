@@ -19,6 +19,12 @@ iwctl --passphrase=PASSPHRASE station DEVICE connect SSID
 
 ## Tips and Tricks
 
+### Download wallpapers
+
+Download wallpapers from wallheaven with [waldl](https://github.com/pystardust/waldl) by [pystardust](https://github.com/pystardust). You can launch waldl from dmenu.
+
+I modified the original script to match the font and the color scheme provided by pywal.
+
 ### Installation error git [err: key could not be imported]
 
 Before cloning this repo, you have to download git first, if you face key import error while installing git, just update the mirrors and it will work just fine.
