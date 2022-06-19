@@ -8,62 +8,16 @@
 
 set -e
 
-printf "WIFI SSID (leave it blank if you don't wanna use wifi): "
-read -r SSID
-
-stty -echo
-printf "WIFI Password (leave it blank if you don't wanna use wifi): "
-read -r PASS
-printf "\n"
-stty echo
-
-ISAMDCPU=$( grep -c "AuthenticAMD" /proc/cpuinfo || true )
-ISINTELCPU=$( grep -c "GenuineIntel" /proc/cpuinfo || true )
-
-ISAMDGPU=$( lspci | grep -icE "(VGA|3D).*AMD" || true )
-ISINTELGPU=$( lspci | grep -icE "(VGA|3D).*Intel" || true )
-ISNVIDIAGPU=$( lspci | grep -icE "(VGA|3D).*NVIDIA" || true )
-
-if [ "$ISAMDCPU" != "0" ]; then
-    CPU="amd"
-elif [ "$ISINTELCPU" != "0" ]; then
-    CPU="intel"
-else
-    printf "Failed to identify the cpu brand! Exiting the script..." >&2
-    printf "\n"
-    exit 1
-fi
-
-if [ "$ISAMDGPU" != "0" ]; then
-    GPUDRIVER="xf86-video-amdgpu"
-elif [ "$ISINTELGPU" != "0" ]; then
-    GPUDRIVER="xf86-video-intel"
-elif [ "$ISNVIDIAGPU" != "0" ]; then
-    GPUDRIVER="nvidia"
-else
-    printf "Failed to identify the gpu brand! Exiting the script..." >&2
-    printf "\n"
-    exit 1
-fi
-
-sudo dd if=/dev/zero of=/mnt/swapfile bs=1M count=8192 status=progress
+sudo dd if=/dev/zero of=/mnt/swapfile bs=1M count=1024 status=progress
 sudo chmod 600 /mnt/swapfile 
 sudo mkswap /mnt/swapfile
 echo '/mnt/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
 sudo swapon /mnt/swapfile
 
-if [ "$SSID" != "" ]; then
-    sudo nmcli d wifi connect "$SSID" password "$PASS"
-fi
-
 sudo sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 15/" /etc/pacman.conf
 sudo sed -i "s/^#Color$/Color\nILoveCandy/" /etc/pacman.conf
 
-sudo pacman -Sy --noconfirm vim "$CPU-ucode" xorg-server "$GPUDRIVER" xorg-xinit brightnessctl btop git firefox xcompmgr xwallpaper xclip xdotool dmenu ttf-jetbrains-mono ttf-joypixels ttf-font-awesome wget imagemagick python-pip sxiv unclutter man-db mpv dunst sxhkd pulseaudio pamixer maim zsh neovim tmux ranger jq noto-fonts libnotify
-
-if [ "$GPUDRIVER" = "nvidia" ]; then
-    sudo pacman -S --noconfirm nvidia-utils
-fi
+sudo pacman -Sy --noconfirm vim xorg-server xf86-video-vesa xorg-xinit brightnessctl btop git firefox xcompmgr xwallpaper xclip xdotool dmenu ttf-jetbrains-mono ttf-joypixels ttf-font-awesome wget imagemagick python-pip sxiv unclutter man-db mpv dunst sxhkd pulseaudio pamixer maim zsh neovim tmux ranger jq noto-fonts libnotify
 
 git clone --no-checkout https://github.com/b31ngd3v/dotfiles.git "$HOME/tmp"
 mv "$HOME/tmp/.git" "$HOME"
@@ -104,24 +58,6 @@ Section "InputClass"
     Option "Tapping" "on"
 EndSection
 CONF
-
-if [ "$ISAMDGPU" != "0" ]; then
-    sudo tee /etc/X11/xorg.conf.d/20-amd-gpu.conf > /dev/null << CONF
-Section "Device"
-    Identifier  "AMD Graphics"
-    Driver      "amdgpu"
-    Option      "TearFree"  "true"
-EndSection
-CONF
-elif [ "$ISINTELGPU" != "0" ]; then
-    sudo tee /etc/X11/xorg.conf.d/20-intel-gpu.conf > /dev/null << CONF
-Section "Device"
-    Identifier  "Intel Graphics"
-    Driver      "intel"
-    Option      "TearFree"  "true"
-EndSection
-CONF
-fi
 
 yay -Sc --noconfirm
 sudo chsh -s "$(which zsh)" "$USER"
