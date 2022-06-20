@@ -17,7 +17,7 @@ sudo swapon /mnt/swapfile
 sudo sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 15/" /etc/pacman.conf
 sudo sed -i "s/^#Color$/Color\nILoveCandy/" /etc/pacman.conf
 
-sudo pacman -Sy --noconfirm vim xorg-server xf86-video-vesa xorg-xinit brightnessctl btop git firefox xcompmgr xwallpaper xclip xdotool dmenu ttf-jetbrains-mono ttf-joypixels ttf-font-awesome wget imagemagick python-pip sxiv unclutter man-db mpv dunst sxhkd pulseaudio pamixer maim zsh neovim tmux ranger jq noto-fonts libnotify
+sudo pacman -Sy --noconfirm vim xorg-server xf86-video-vesa xorg-xinit brightnessctl git firefox xcompmgr xwallpaper xclip xdotool dmenu ttf-jetbrains-mono ttf-joypixels ttf-font-awesome wget imagemagick python-pip sxiv unclutter man-db mpv dunst sxhkd pulseaudio pamixer maim zsh tmux ranger jq noto-fonts libnotify
 
 git clone --no-checkout https://github.com/b31ngd3v/dotfiles.git "$HOME/tmp"
 mv "$HOME/tmp/.git" "$HOME"
@@ -32,7 +32,7 @@ git clone https://aur.archlinux.org/yay-bin.git /tmp/yay-bin
 rm -rf /tmp/yay-bin
 
 sudo pacman -Rdd --noconfirm libxft
-yay -S --noconfirm libxft-bgra betterlockscreen zsh-fast-syntax-highlighting nerd-fonts-hack
+yay -S --noconfirm libxft-bgra betterlockscreen zsh-fast-syntax-highlighting
 sudo systemctl enable betterlockscreen@"$USER"
 
 pip install pywal ueberzug
