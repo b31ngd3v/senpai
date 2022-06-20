@@ -32,7 +32,7 @@ git clone https://aur.archlinux.org/yay-bin.git /tmp/yay-bin
 rm -rf /tmp/yay-bin
 
 sudo pacman -Rdd --noconfirm libxft
-yay -S --noconfirm libxft-bgra betterlockscreen zsh-fast-syntax-highlighting
+yay -S --noconfirm libxft-bgra betterlockscreen zsh-fast-syntax-highlighting nerd-fonts-hack
 sudo systemctl enable betterlockscreen@"$USER"
 
 pip install pywal ueberzug
