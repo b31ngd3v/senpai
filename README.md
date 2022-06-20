@@ -2,6 +2,10 @@
 
 ![preview](https://user-images.githubusercontent.com/64733912/174498063-09555ee4-f545-4fc3-986e-a1f07787c5da.jpg)
 
+## Enable EFI in virtualbox
+
+![image](https://user-images.githubusercontent.com/64733912/174636923-9b279d91-8882-47f8-96cc-cacff5695902.png)
+
 ## Download and Run
 
 ```
