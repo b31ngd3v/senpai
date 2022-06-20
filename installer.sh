@@ -28,28 +28,15 @@ if [ "$PASSWORD" != "$CONFIRMPASSWORD" ]; then
     exit 1
 fi
 
-printf "Would you like to use automatic partitioning? [y/N]: "
-read -r AUTOPART
-
 timedatectl set-ntp true
 
 LARGEST_PARTITION_SIZE=$(fdisk -l | grep "Disk.*GiB" | cut -d' ' -f3 | sort -nr | head -n1)
 LARGEST_PARTITION=$(fdisk -l | grep "$LARGEST_PARTITION_SIZE GiB" | cut -d' ' -f2  | sed 's/.$//')
-if [ "$AUTOPART" = "y" ] || [ "$AUTOPART" = "Y" ] || [ "$AUTOPART" = "Yes" ] || [ "$AUTOPART" = "yes" ]; then
-    sfdisk "$LARGEST_PARTITION" << EOF
+sfdisk "$LARGEST_PARTITION" << EOF
 label: gpt
 name=EFI,size=512MB,type=uefi
 name=ROOT,type=linux
 EOF
-else
-    printf "Create two partitions:"
-    printf "\n"
-    printf "    1. %s1    EFI" "$LARGEST_PARTITION"
-    printf "\n"
-    printf "    2. %s2    Linux filesystem" "$LARGEST_PARTITION"
-    printf "\n"
-    fdisk "$LARGEST_PARTITION"
-fi
 echo "y" | mkfs.fat -F32 "${LARGEST_PARTITION}1"
 echo "y" | mkfs.ext4 "${LARGEST_PARTITION}2"
 mount "${LARGEST_PARTITION}2" /mnt
