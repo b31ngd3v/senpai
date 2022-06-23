@@ -85,7 +85,7 @@ You can update the mirrorlist using this command: `reflector --latest 5 --sort r
 
 ### Partitioning
 
-Sometimes automatic partitioning does work, while booting for the first time it may say that it failed to mount the EFI partition, then you have to start from the scratch again and the only solution is to use manual pertitioning.
+Sometimes automatic partitioning doesn't work, while booting for the first time it may say that it failed to mount the EFI partition, then you have to start from the scratch again and the only solution is to use manual pertitioning.
 
 ### Screen Tearing [err: DRM version X.XX.X but this driver is only compatible with X.XX.X]
 
