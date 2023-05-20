@@ -59,7 +59,7 @@ fi
 sudo sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 15/" /etc/pacman.conf
 sudo sed -i "s/^#Color$/Color\nILoveCandy/" /etc/pacman.conf
 
-sudo pacman -Sy --noconfirm vim "$CPU-ucode" xorg-server "$GPUDRIVER" xorg-xinit brightnessctl git firefox xcompmgr xwallpaper xclip xdotool dmenu ttf-jetbrains-mono ttf-joypixels ttf-font-awesome wget imagemagick python-pip sxiv unclutter man-db mpv dunst sxhkd pulseaudio pamixer maim zsh tmux ranger jq noto-fonts libnotify fzf
+sudo pacman -Sy --noconfirm vim "$CPU-ucode" ueberzug libxft xorg-server "$GPUDRIVER" xorg-xinit brightnessctl git firefox xcompmgr xwallpaper xclip xdotool dmenu ttf-jetbrains-mono ttf-joypixels ttf-font-awesome wget imagemagick python-pip sxiv unclutter man-db mpv dunst sxhkd pulseaudio pamixer maim zsh tmux ranger jq noto-fonts libnotify fzf
 
 if [ "$GPUDRIVER" = "nvidia" ]; then
     sudo pacman -S --noconfirm nvidia-utils
@@ -77,11 +77,10 @@ git clone https://aur.archlinux.org/yay-bin.git /tmp/yay-bin
 (cd /tmp/yay-bin && makepkg -si --noconfirm)
 rm -rf /tmp/yay-bin
 
-sudo pacman -Rdd --noconfirm libxft
-yay -S --noconfirm libxft-bgra betterlockscreen zsh-fast-syntax-highlighting
+yay -S --noconfirm betterlockscreen zsh-fast-syntax-highlighting
 sudo systemctl enable betterlockscreen@"$USER"
 
-pip install pywal ueberzug
+pip install pywal
 
 mkdir "$HOME/.local/src"
 
